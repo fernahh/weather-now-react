@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './stylesheets/application.css'
-import App from './App'
+import Weather from './javascripts/weather'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<Weather />, document.getElementById('root'))
