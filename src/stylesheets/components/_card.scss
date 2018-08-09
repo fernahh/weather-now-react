@@ -1,0 +1,27 @@
+.card {
+  margin-top: 40px;
+  margin-left: 40px;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 250px;
+
+  background-color: $white-color;
+  border-radius: 4px;
+  box-shadow: $base-box-shadow;
+}
+
+.card__header {
+  display: flex;
+  justify-content: center;
+
+  text-align: center;
+
+  border-bottom: 1px solid $gray-color;
+}
+
+.card__title {
+  font-size: $base-font-size__medium;
+  font-weight: normal;
+}
