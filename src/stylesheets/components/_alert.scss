@@ -1,0 +1,9 @@
+.alert {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.alert__message {
+  color: $red-color;
+}
