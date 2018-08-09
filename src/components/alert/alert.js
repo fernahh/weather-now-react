@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import './alert.css'
 import Button from '../button/button'
 
 function Alert(props) {

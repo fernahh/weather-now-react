@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './stylesheets/application.css'
-import Weather from './javascripts/weather'
+import './index.css'
+import Weather from './weather'
 
 ReactDOM.render(<Weather />, document.getElementById('root'))

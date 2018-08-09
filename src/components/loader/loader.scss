@@ -1,3 +1,5 @@
+@import "../../settings.scss";
+
 .loader {
   $size: 50px;
 
@@ -5,7 +7,7 @@
   width: $size;
   height: $size;
 
-  background-image: url("../images/loader.svg");
+  background-image: url("./loader.svg");
   background-repeat: no-repeat;
   background-size: contain;
 }
