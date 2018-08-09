@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import Topbar from './javascripts/components/topbar/topbar'
 
 class App extends Component {
   render() {
     return (
-      <h1>Hello world {process.env.REACT_APP_API_KEY}</h1>
+      <Topbar />
     )
   }
 }
