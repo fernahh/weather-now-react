@@ -1,0 +1,11 @@
+.button {
+  display: flex;
+  padding: 10px 20px;
+
+  background-color: transparent;
+  border: 2px solid $gray-color__dark;
+  border-radius: 22px;
+
+  color: $gray-color__dark;
+  font-size: $base-font-size;
+}
