@@ -1,0 +1,11 @@
+.loader {
+  $size: 50px;
+
+  display: flex;
+  width: $size;
+  height: $size;
+
+  background-image: url("../images/loader.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
