@@ -1,24 +1,34 @@
 import React from 'react'
 import { shallow } from 'enzyme'
+import axios from 'axios'
 import RequestCard from './request-card'
 import Card from '../card/card'
 import Loader from '../loader/loader'
 import Alert from '../alert/alert'
 
+jest.mock('axios')
+
 describe('<RequestCard />', () => {
   const retryAction = jest.fn()
+  const onGetDataSuccess = jest.fn()
+  const onGetDataError = jest.fn()
 
-  const getRequestCardWrapper = (fetchAction) => {
+  const getRequestCardWrapper = () => {
     return shallow(
-      <RequestCard title="Foobar" fetch={fetchAction} retryAction={retryAction}>
+      <RequestCard 
+        title="Foobar" 
+        url="http://api.com/dog"
+        onGetDataSuccess={onGetDataSuccess}
+        onGetDataError={onGetDataError}
+        retryAction={retryAction}>
         <p className="content">Content</p>
       </RequestCard>
     )
   }
 
   describe('when render', () => {
-    const fetchAction = jest.fn().mockReturnValue(new Promise(jest.fn(), jest.fn()))
-    const wrapper = getRequestCardWrapper(fetchAction)
+    axios.get.mockImplementation(() => new Promise(jest.fn())) 
+    const wrapper = getRequestCardWrapper()
 
     it('should have request-card class', () => {
       expect(wrapper.hasClass('request-card')).toEqual(true)
@@ -29,8 +39,8 @@ describe('<RequestCard />', () => {
       expect(cardProps.title).toEqual('Foobar')
     })
     
-    it('should fetch data', () => {
-      expect(fetchAction).toHaveBeenCalled()
+    it('should call get method with url', () => {
+      expect(axios.get).toHaveBeenCalledWith('http://api.com/dog')
     })
 
     it('should set showLoader as true', () => {
@@ -46,9 +56,10 @@ describe('<RequestCard />', () => {
     })
   })
 
-  describe('when fetch data complete with success', () => {
-    const fetchAction = jest.fn().mockReturnValue(Promise.resolve())
-    const wrapper = getRequestCardWrapper(fetchAction)
+  describe('when get data complete with success', () => {
+    const data = { name: 'Lassie' }
+    axios.get.mockImplementation(() => Promise.resolve(data))
+    const wrapper = getRequestCardWrapper()
 
     it('should set showLoader as false', () => {
       expect(wrapper.state('showLoader')).toEqual(false)
@@ -61,11 +72,16 @@ describe('<RequestCard />', () => {
     it('should render children', () => {
       expect(wrapper.exists('.content')).toEqual(true)
     })
+
+    it('should execute onGetDataSuccess callback with data response', () => {
+      expect(onGetDataSuccess).toHaveBeenCalledWith(data)
+    })
   })
 
-  describe('when fetch is rejected', () => {
-    const fetchAction = jest.fn().mockReturnValue(Promise.reject())
-    const wrapper = getRequestCardWrapper(fetchAction)
+  describe('when get data is rejected', () => {
+    const error = { message: 'Some error message' }
+    axios.get.mockImplementation(() => Promise.reject(error))
+    const wrapper = getRequestCardWrapper()
 
     it('should set showLoader as false', () => {
       expect(wrapper.state('showLoader')).toEqual(false)
@@ -81,6 +97,10 @@ describe('<RequestCard />', () => {
 
     it('should not render children', () => {
       expect(wrapper.exists('.content')).toEqual(false)
+    })
+
+    it('should execute onGetDataError callback with error response', () => {
+      expect(onGetDataError).toHaveBeenCalledWith(error)
     })
 
     it('should show alert component', () => {

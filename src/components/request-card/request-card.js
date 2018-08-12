@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Card from '../card/card'
 import Loader from '../loader/loader'
 import Alert from '../alert/alert'
+import axios from 'axios'
 
 class RequestCard extends Component {
   static defaultProps = {
@@ -12,9 +13,11 @@ class RequestCard extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     errorMessage: PropTypes.string,
-    fetch: PropTypes.func.isRequired,
+    onGetDataSuccess: PropTypes.func.isRequired,
+    onGetDataError: PropTypes.func.isRequired,
     retryAction: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
   }
 
   state = {
@@ -23,20 +26,27 @@ class RequestCard extends Component {
   }
 
   componentDidMount() {
-    this.props.fetch().then(this.onFetchSuccess, this.onFetchError)
+    this.setState({
+      showLoader: true
+    })
+    axios.get(this.props.url)
+      .then(this.onFetchSuccess)
+      .catch(this.onFetchError)
   }
 
-  onFetchSuccess = () => {
+  onFetchSuccess = (data) => {
     this.setState({
       showLoader: false
     })
+    this.props.onGetDataSuccess(data)
   }
 
-  onFetchError = () => {
+  onFetchError = (error) => {
     this.setState({
       showLoader: false,
       showError: true
     })
+    this.props.onGetDataError(error)
   }
 
   render() {
