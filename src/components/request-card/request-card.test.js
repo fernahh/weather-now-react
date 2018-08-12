@@ -14,14 +14,14 @@ describe('<RequestCard />', () => {
   const onGetDataSuccess = jest.fn()
   const onGetDataError = jest.fn()
 
-  const getRequestCardWrapper = () => {
+  const getRequestCardWrapper = (refreshInterval) => {
     return shallow(
       <RequestCard 
         title="Foobar" 
         url="http://api.com/dog"
         onGetDataSuccess={onGetDataSuccess}
         onGetDataError={onGetDataError}
-        refreshInterval={600000}
+        refreshInterval={refreshInterval}
         retryAction={retryAction}>
         <p className="content">Content</p>
       </RequestCard>
@@ -114,7 +114,7 @@ describe('<RequestCard />', () => {
 
   describe('when refresh interval', () => {
     axios.get.mockImplementation(() => new Promise(jest.fn())) 
-    const wrapper = getRequestCardWrapper()
+    const wrapper = getRequestCardWrapper(6000)
 
     it('should call get method with url', () => {
       axios.get.mockClear()
@@ -127,6 +127,22 @@ describe('<RequestCard />', () => {
     it('should clear interval on unmount', () => {
       wrapper.unmount()
       expect(clearInterval).toHaveBeenCalled()
+    })
+  })
+
+  describe('when refresh interval is not declared', () => {
+    axios.get.mockImplementation(() => new Promise(jest.fn())) 
+    const wrapper = getRequestCardWrapper()
+
+    it('should not call set interval method', () => {
+      setInterval.mockClear()
+      expect(setInterval).not.toBeCalled()
+    })
+
+    it('should not call clear interval on unmount', () => {
+      clearInterval.mockClear()
+      wrapper.unmount()
+      expect(clearInterval).not.toBeCalled()
     })
   })
 })

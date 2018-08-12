@@ -7,8 +7,7 @@ import axios from 'axios'
 
 class RequestCard extends Component {
   static defaultProps = {
-    errorMessage: 'Something went wrong',
-    refreshInterval: 6000
+    errorMessage: 'Something went wrong'
   }
 
   static propTypes = {
@@ -28,12 +27,15 @@ class RequestCard extends Component {
   }
 
   componentDidMount() {
-    this.fetchData()
-    this.interval = setInterval(this.fetchData, this.props.refreshInterval)
+    this.fetchData()    
+
+    if (this.props.refreshInterval)
+      this.interval = setInterval(this.fetchData, this.props.refreshInterval)
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval)
+    if (this.interval)
+      clearInterval(this.interval)
   }
 
   fetchData = () => {
