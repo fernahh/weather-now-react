@@ -7,6 +7,7 @@ import Loader from '../loader/loader'
 import Alert from '../alert/alert'
 
 jest.mock('axios')
+jest.useFakeTimers()
 
 describe('<RequestCard />', () => {
   const retryAction = jest.fn()
@@ -20,6 +21,7 @@ describe('<RequestCard />', () => {
         url="http://api.com/dog"
         onGetDataSuccess={onGetDataSuccess}
         onGetDataError={onGetDataError}
+        refreshInterval={600000}
         retryAction={retryAction}>
         <p className="content">Content</p>
       </RequestCard>
@@ -107,6 +109,24 @@ describe('<RequestCard />', () => {
       expect(wrapper.contains(
         <Alert message="Something went wrong" retryAction={retryAction}/>)
       ).toEqual(true)
+    })
+  })
+
+  describe('when refresh interval', () => {
+    axios.get.mockImplementation(() => new Promise(jest.fn())) 
+    const wrapper = getRequestCardWrapper()
+
+    it('should call get method with url', () => {
+      axios.get.mockClear()
+      expect(axios.get).not.toBeCalled()
+    
+      jest.runOnlyPendingTimers()
+      expect(axios.get).toHaveBeenCalledWith('http://api.com/dog')
+    })
+
+    it('should clear interval on unmount', () => {
+      wrapper.unmount()
+      expect(clearInterval).toHaveBeenCalled()
     })
   })
 })
