@@ -1,12 +1,14 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import axios from 'axios'
 import RequestCard from './request-card'
 import Card from '../card/card'
 import Loader from '../loader/loader'
 import Alert from '../alert/alert'
+import storage from '../../services/storage/storage'
+import request from '../../services/request/request'
 
-jest.mock('axios')
+jest.mock('../../services/request/request')
+jest.mock('../../services/storage/storage')
 jest.useFakeTimers()
 
 describe('<RequestCard />', () => {
@@ -14,9 +16,11 @@ describe('<RequestCard />', () => {
   const onGetDataSuccess = jest.fn()
   const onGetDataError = jest.fn()
 
-  const getRequestCardWrapper = (refreshInterval) => {
+  const getRequestCardWrapper = (refreshInterval, cacheKey, cacheTime) => {
     return shallow(
       <RequestCard 
+        cacheKey={cacheKey}
+        cacheTime={cacheTime}
         title="Foobar" 
         url="http://api.com/dog"
         onGetDataSuccess={onGetDataSuccess}
@@ -29,7 +33,7 @@ describe('<RequestCard />', () => {
   }
 
   describe('when render', () => {
-    axios.get.mockImplementation(() => new Promise(jest.fn())) 
+    request.get.mockImplementation(() => new Promise(jest.fn())) 
     const wrapper = getRequestCardWrapper()
 
     it('should have request-card class', () => {
@@ -42,7 +46,7 @@ describe('<RequestCard />', () => {
     })
     
     it('should call get method with url', () => {
-      expect(axios.get).toHaveBeenCalledWith('http://api.com/dog')
+      expect(request.get).toHaveBeenCalledWith('http://api.com/dog')
     })
 
     it('should set showLoader as true', () => {
@@ -60,7 +64,7 @@ describe('<RequestCard />', () => {
 
   describe('when get data complete with success', () => {
     const data = { name: 'Lassie' }
-    axios.get.mockImplementation(() => Promise.resolve(data))
+    request.get.mockImplementation(() => Promise.resolve(data))
     const wrapper = getRequestCardWrapper()
 
     it('should set showLoader as false', () => {
@@ -82,7 +86,7 @@ describe('<RequestCard />', () => {
 
   describe('when get data is rejected', () => {
     const error = { message: 'Some error message' }
-    axios.get.mockImplementation(() => Promise.reject(error))
+    request.get.mockImplementation(() => Promise.reject(error))
     const wrapper = getRequestCardWrapper()
 
     it('should set showLoader as false', () => {
@@ -113,15 +117,15 @@ describe('<RequestCard />', () => {
   })
 
   describe('when refresh interval', () => {
-    axios.get.mockImplementation(() => new Promise(jest.fn())) 
+    request.get.mockImplementation(() => new Promise(jest.fn())) 
     const wrapper = getRequestCardWrapper(6000)
 
     it('should call get method with url', () => {
-      axios.get.mockClear()
-      expect(axios.get).not.toBeCalled()
+      request.get.mockClear()
+      expect(request.get).not.toBeCalled()
     
       jest.runOnlyPendingTimers()
-      expect(axios.get).toHaveBeenCalledWith('http://api.com/dog')
+      expect(request.get).toHaveBeenCalledWith('http://api.com/dog')
     })
 
     it('should clear interval on unmount', () => {
@@ -131,7 +135,7 @@ describe('<RequestCard />', () => {
   })
 
   describe('when refresh interval is not declared', () => {
-    axios.get.mockImplementation(() => new Promise(jest.fn())) 
+    request.get.mockImplementation(() => new Promise(jest.fn())) 
     const wrapper = getRequestCardWrapper()
 
     it('should not call set interval method', () => {
@@ -143,6 +147,16 @@ describe('<RequestCard />', () => {
       clearInterval.mockClear()
       wrapper.unmount()
       expect(clearInterval).not.toBeCalled()
+    })
+  })
+
+  describe('when cache response data', () => {
+    const data = { name: 'Lassie' }
+    getRequestCardWrapper(6000, 'dog', 7000)
+    request.get.mockImplementation(() => Promise.resolve(data))
+
+    it('should set item on storage', () => {
+      expect(storage.set).toHaveBeenCalledWith('dog', data)
     })
   })
 })

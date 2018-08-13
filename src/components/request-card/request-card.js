@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Card from '../card/card'
-import Loader from '../loader/loader'
 import Alert from '../alert/alert'
-import axios from 'axios'
+import Loader from '../loader/loader'
+import storage from '../../services/storage/storage'
+import request from '../../services/request/request'
 
 class RequestCard extends Component {
   static defaultProps = {
@@ -11,6 +12,8 @@ class RequestCard extends Component {
   }
 
   static propTypes = {
+    cacheKey: PropTypes.string,
+    cacheTime: PropTypes.number,
     children: PropTypes.element.isRequired,
     errorMessage: PropTypes.string,
     onGetDataSuccess: PropTypes.func.isRequired,
@@ -42,7 +45,7 @@ class RequestCard extends Component {
     this.setState({
       showLoader: true
     })
-    axios.get(this.props.url)
+    request.get(this.props.url)
       .then(this.onFetchSuccess)
       .catch(this.onFetchError)
   }
@@ -52,6 +55,9 @@ class RequestCard extends Component {
       showLoader: false
     })
     this.props.onGetDataSuccess(data)
+
+    if (this.props.cacheKey)
+      this.cacheData(data)
   }
 
   onFetchError = (error) => {
@@ -60,6 +66,10 @@ class RequestCard extends Component {
       showError: true
     })
     this.props.onGetDataError(error)
+  }
+
+  cacheData = (data) => {
+    storage.set(this.props.cacheKey, data)
   }
 
   render() {
