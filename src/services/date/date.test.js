@@ -1,9 +1,9 @@
 import date from './date'
 import getTime from 'date-fns/get_time'
-import differenceInMinutes from 'date-fns/difference_in_minutes'
+import differenceInMilliseconds from 'date-fns/difference_in_milliseconds'
 
 jest.mock('date-fns/get_time')
-jest.mock('date-fns/difference_in_minutes')
+jest.mock('date-fns/difference_in_milliseconds')
 
 describe('Date', () => {
   it('should call getTime from date-fns', () => {
@@ -12,10 +12,10 @@ describe('Date', () => {
     expect(getTime).toHaveBeenCalledWith(currentDate)
   })
 
-  it('should call differenceInMinutes from date-fns', () => {
+  it('should call differenceInMilliseconds from date-fns', () => {
     const currentDate = new Date()
     const otherDate = new Date()
     date.difference(currentDate, otherDate)
-    expect(differenceInMinutes).toHaveBeenCalledWith(currentDate, otherDate)
+    expect(differenceInMilliseconds).toHaveBeenCalledWith(currentDate, otherDate)
   })
 })

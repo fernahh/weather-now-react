@@ -1,8 +1,7 @@
 import getTime from 'date-fns/get_time'
-import differenceInMinutes from 'date-fns/difference_in_minutes'
+import differenceInMilliseconds from 'date-fns/difference_in_milliseconds'
 
-
-const difference = (initialDate, lastDate) => differenceInMinutes(initialDate, lastDate)
+const difference = (initialDate, lastDate) => differenceInMilliseconds(initialDate, lastDate)
 
 const now = () => getTime(new Date())
 
