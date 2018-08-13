@@ -1,15 +1,20 @@
 import React from 'react'
 import { shallow } from 'enzyme'
+import addMilliseconds from 'date-fns/add_milliseconds'
+import subMilliseconds from 'date-fns/sub_milliseconds'
+import getTime from 'date-fns/get_time'
 import RequestCard from './request-card'
 import Card from '../card/card'
 import Loader from '../loader/loader'
 import Alert from '../alert/alert'
 import storage from '../../services/storage/storage'
 import request from '../../services/request/request'
+import date from '../../services/date/date'
 
 jest.mock('../../services/request/request')
 jest.mock('../../services/storage/storage')
 jest.useFakeTimers()
+date.now = jest.fn()
 
 describe('<RequestCard />', () => {
   const retryAction = jest.fn()
@@ -45,7 +50,39 @@ describe('<RequestCard />', () => {
       expect(cardProps.title).toEqual('Foobar')
     })
     
-    it('should call get method with url', () => {
+    it('should not call request get method with url when data is cached', () => {
+      const cacheKey = 'dog'
+      const cacheTime = 6000
+      const beforeCacheTime = 8000
+      const beforeDate = getTime(subMilliseconds(getTime(new Date()), beforeCacheTime))
+      const nowDate = getTime(subMilliseconds(beforeDate, beforeCacheTime))
+      
+      request.get.mockClear()
+      storage.get.mockReturnValue({ name: 'Lessie', updateAt: beforeDate})
+      date.now.mockReturnValue(nowDate)
+      getRequestCardWrapper(null, cacheKey, cacheTime)
+
+      expect(request.get).not.toBeCalled()
+    })
+
+    it('should call request get method with url when cache is less than TTL', () => {
+      const cacheKey = 'dog'
+      const cacheTime = 120000
+      const afterCacheTime = 130000
+      const beforeDate = getTime(new Date())
+      const nowDate = getTime(addMilliseconds(beforeDate, afterCacheTime))
+      
+      request.get.mockClear()
+      storage.get.mockReturnValue({ name: 'Lessie', updateAt: beforeDate})
+      date.now.mockReturnValue(nowDate)
+      getRequestCardWrapper(null, cacheKey, cacheTime)
+      
+      expect(request.get).toHaveBeenCalledWith('http://api.com/dog')
+    })
+    
+    it('should call request get method with url', () => {
+      storage.get.mockReturnValue(false)
+      getRequestCardWrapper(6000, 'dog', 7000)
       expect(request.get).toHaveBeenCalledWith('http://api.com/dog')
     })
 

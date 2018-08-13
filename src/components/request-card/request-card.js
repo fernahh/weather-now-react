@@ -5,6 +5,11 @@ import Alert from '../alert/alert'
 import Loader from '../loader/loader'
 import storage from '../../services/storage/storage'
 import request from '../../services/request/request'
+import date from '../../services/date/date'
+
+const cacheIsValid = (data, cacheTime) => {
+  return date.difference(data.updateAt, date.now()) > cacheTime
+}
 
 class RequestCard extends Component {
   static defaultProps = {
@@ -45,9 +50,16 @@ class RequestCard extends Component {
     this.setState({
       showLoader: true
     })
-    request.get(this.props.url)
-      .then(this.onFetchSuccess)
-      .catch(this.onFetchError)
+
+    const data = storage.get(this.props.cacheKey)
+
+    if (data && cacheIsValid(data, this.props.cacheTime)) {
+      this.onFetchSuccess(data)
+    } else {
+      request.get(this.props.url)
+        .then(this.onFetchSuccess)
+        .catch(this.onFetchError)
+    }
   }
 
   onFetchSuccess = (data) => {
@@ -57,7 +69,7 @@ class RequestCard extends Component {
     this.props.onGetDataSuccess(data)
 
     if (this.props.cacheKey)
-      this.cacheData(data)
+      storage.set(this.props.cacheKey, data)
   }
 
   onFetchError = (error) => {
@@ -66,10 +78,6 @@ class RequestCard extends Component {
       showError: true
     })
     this.props.onGetDataError(error)
-  }
-
-  cacheData = (data) => {
-    storage.set(this.props.cacheKey, data)
   }
 
   render() {
