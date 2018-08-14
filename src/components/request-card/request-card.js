@@ -25,7 +25,8 @@ class RequestCard extends Component {
     onGetDataError: PropTypes.func.isRequired,
     refreshInterval: PropTypes.number,
     title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired
+    url: PropTypes.string.isRequired,
+    urlParams: PropTypes.object
   }
 
   state = {
@@ -51,11 +52,12 @@ class RequestCard extends Component {
     })
 
     const data = storage.get(this.props.cacheKey)
+    const { urlParams } = this.props
 
     if (data && cacheIsValid(data, this.props.cacheTime)) {
       this.onFetchSuccess(data)
     } else {
-      request.get(this.props.url)
+      request.get(this.props.url, { ...urlParams })
         .then(this.onFetchSuccess)
         .catch(this.onFetchError)
     }

@@ -17,7 +17,6 @@ jest.useFakeTimers()
 date.now = jest.fn()
 
 describe('<RequestCard />', () => {
-  const retryAction = jest.fn()
   const onGetDataSuccess = jest.fn()
   const onGetDataError = jest.fn()
 
@@ -76,13 +75,13 @@ describe('<RequestCard />', () => {
       date.now.mockReturnValue(nowDate)
       getRequestCardWrapper(null, cacheKey, cacheTime)
       
-      expect(request.get).toHaveBeenCalledWith('http://api.com/dog')
+      expect(request.get).toHaveBeenCalledWith('http://api.com/dog', {})
     })
     
     it('should call request get method with url', () => {
       storage.get.mockReturnValue(false)
       getRequestCardWrapper(6000, 'dog', 7000)
-      expect(request.get).toHaveBeenCalledWith('http://api.com/dog')
+      expect(request.get).toHaveBeenCalledWith('http://api.com/dog', {})
     })
 
     it('should set showLoader as true', () => {
@@ -163,7 +162,7 @@ describe('<RequestCard />', () => {
       expect(request.get).not.toBeCalled()
     
       jest.runOnlyPendingTimers()
-      expect(request.get).toHaveBeenCalledWith('http://api.com/dog')
+      expect(request.get).toHaveBeenCalledWith('http://api.com/dog', {})
     })
 
     it('should clear interval on unmount', () => {
