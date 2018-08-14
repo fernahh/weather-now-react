@@ -30,8 +30,7 @@ describe('<RequestCard />', () => {
         url="http://api.com/dog"
         onGetDataSuccess={onGetDataSuccess}
         onGetDataError={onGetDataError}
-        refreshInterval={refreshInterval}
-        retryAction={retryAction}>
+        refreshInterval={refreshInterval}>
         <p className="content">Content</p>
       </RequestCard>
     )
@@ -147,8 +146,10 @@ describe('<RequestCard />', () => {
     })
 
     it('should show alert component', () => {
+      const fetchAction = wrapper.instance().fetchData
+      
       expect(wrapper.contains(
-        <Alert message="Something went wrong" retryAction={retryAction}/>)
+        <Alert message="Something went wrong" retryAction={fetchAction}/>)
       ).toEqual(true)
     })
   })

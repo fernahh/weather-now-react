@@ -24,7 +24,6 @@ class RequestCard extends Component {
     onGetDataSuccess: PropTypes.func.isRequired,
     onGetDataError: PropTypes.func.isRequired,
     refreshInterval: PropTypes.number,
-    retryAction: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired
   }
@@ -82,14 +81,14 @@ class RequestCard extends Component {
 
   render() {
     const { showLoader, showError } = this.state
-    const { children, errorMessage, title, retryAction } = this.props
+    const { children, errorMessage, title } = this.props
     const showChildren = !showLoader && !showError
 
     return (
       <div className="request-card">
         <Card title={title}>
           {showLoader && <Loader />}
-          {showError && <Alert message={errorMessage} retryAction={retryAction}/>}
+          {showError && <Alert message={errorMessage} retryAction={this.fetchData}/>}
           {showChildren && children}
         </Card>
       </div>
