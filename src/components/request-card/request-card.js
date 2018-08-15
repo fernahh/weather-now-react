@@ -8,7 +8,7 @@ import request from '../../services/request/request'
 import date from '../../services/date/date'
 
 const cacheIsValid = (data, cacheTime) => {
-  return date.difference(data.updateAt, date.now()) > cacheTime
+  return data && date.difference(data.updateAt, date.now()) > cacheTime
 }
 
 class RequestCard extends Component {
@@ -47,30 +47,28 @@ class RequestCard extends Component {
   }
 
   fetchData = () => {
-    this.setState({
-      showLoader: true
-    })
+    this.setState({ showLoader: true })
 
-    const data = storage.get(this.props.cacheKey)
+    const cachedData = storage.get(this.props.cacheKey)
     const { urlParams } = this.props
 
-    if (data && cacheIsValid(data, this.props.cacheTime)) {
-      this.onFetchSuccess(data)
-    } else {
-      request.get(this.props.url, { ...urlParams })
-        .then(this.onFetchSuccess)
-        .catch(this.onFetchError)
-    }
+    cacheIsValid(cachedData, this.props.cacheTime) 
+      ? this.onFetchSuccess(cachedData)
+      : request.get(this.props.url, { ...urlParams })
+          .then(this.onFetchSuccess)
+          .catch(this.onFetchError)
   }
 
   onFetchSuccess = (data) => {
-    this.setState({
-      showLoader: false
-    })
-    this.props.onGetDataSuccess(data)
+    const updatedAt = date.now()
+    const dataWithUpdateAt = Object.assign(data, { updatedAt })
+    
+    if (this.props.cacheKey) {
+      storage.set(this.props.cacheKey, dataWithUpdateAt)
+    }
 
-    if (this.props.cacheKey)
-      storage.set(this.props.cacheKey, data)
+    this.setState({ showLoader: false })
+    this.props.onGetDataSuccess(dataWithUpdateAt)
   }
 
   onFetchError = (error) => {
