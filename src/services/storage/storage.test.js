@@ -20,7 +20,7 @@ describe('Storage', () => {
 
   it('should set data with updatedAt', () => {
     storage.set(key, dog)
-    expect(localStorage.setItem).toHaveBeenCalledWith(key, data)
+    expect(localStorage.setItem).toHaveBeenCalledWith(key, JSON.stringify(data))
   })
 
   it('should get data', () => {
