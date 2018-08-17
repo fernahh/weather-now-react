@@ -3,8 +3,8 @@
 .card {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 250px;
+  width: 250px;
+  overflow: hidden;
 
   background-color: $white-color;
   border-radius: 4px;
