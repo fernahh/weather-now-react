@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
 import Topbar from '../components/topbar/topbar'
-import WeatherCardContainer from './containers/weather-card-container/weather-card-container'
+import WeatherPanel from './components/weather-panel/weather-panel'
 
 class Weather extends Component {
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Topbar />
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <WeatherCardContainer city="Urubici" country="br" showDetails={true} />
-          <WeatherCardContainer city="Nuuk" country="gl" />
-          <WeatherCardContainer city="Nairobi" country="ke" />
-        </div>
-      </div>
+        <WeatherPanel />
+      </React.Fragment>
     )
   }
 }
