@@ -2,5 +2,6 @@
 /coverage
 /build
 /src/**/*.css
+/.firebase
 
 npm-debug.log*
