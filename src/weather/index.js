@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
 import Topbar from '../components/topbar/topbar'
-import WeatherRequestCard from './components/weather-request-card/weather-request-card'
+import WeatherCardContainer from './containers/weather-card-container/weather-card-container'
 
 class Weather extends Component {
   render() {
     return (
       <div>
         <Topbar />
-        <WeatherRequestCard city="Urubici" country="br" title="Urubici" />
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <WeatherCardContainer city="Urubici" country="br" showDetails={true} />
+          <WeatherCardContainer city="Nuuk" country="gl" />
+          <WeatherCardContainer city="Nairobi" country="ke" />
+        </div>
       </div>
     )
   }
