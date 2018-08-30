@@ -1,10 +1,14 @@
 @import "../../settings.scss";
 
 .topbar {
+  position: fixed;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   padding: 15px 0;
+  z-index: 1;
 
   background-color: $white-color;
   box-shadow: $base-box-shadow;
