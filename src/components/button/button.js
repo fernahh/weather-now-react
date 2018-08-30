@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import './button.css'
 
 function Button(props) {
-  const type = props.type || 'button'
+  return <button {...props} className="button" type={props.type}></button>
+}
 
-  return <button {...props} className="button" type={type}></button>
+Button.defaultProps = {
+  type: 'button'
 }
 
 Button.propTypes = {
