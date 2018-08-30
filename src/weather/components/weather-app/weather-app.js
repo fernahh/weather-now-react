@@ -2,7 +2,7 @@ import React from 'react'
 import Topbar from '../../../components/topbar/topbar'
 import WeatherPanel from '../weather-panel/weather-panel'
 
-function Weather() {
+function WeatherApp() {
   return (
     <React.Fragment>
       <Topbar />
@@ -11,4 +11,4 @@ function Weather() {
   )
 }
 
-export default Weather
+export default WeatherApp

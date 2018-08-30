@@ -1,3 +1,3 @@
-import Weather from './components/weather/weather'
+import WeatherApp from './components/weather-app/weather-app'
 
-export default Weather
+export default WeatherApp

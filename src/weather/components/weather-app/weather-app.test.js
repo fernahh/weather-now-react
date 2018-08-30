@@ -1,10 +1,10 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import Weather from './weather'
+import WeatherApp from './weather-app'
 
-describe('<Weather />', () => {  
+describe('<WeatherApp />', () => {  
   it('render correctly', () => {
-    const wrapper = shallow(<Weather />)
+    const wrapper = shallow(<WeatherApp />)
     expect(wrapper).toMatchSnapshot()
   })
 })
