@@ -18,17 +18,17 @@ describe('Storage', () => {
   const data = { name: 'Lessie', updatedAt: now }
   const dog = { name: 'Lessie' }
 
-  it('should set data with updatedAt', () => {
+  it('set data with updatedAt', () => {
     storage.set(key, dog)
     expect(localStorage.setItem).toHaveBeenCalledWith(key, JSON.stringify(data))
   })
 
-  it('should get data', () => {
+  it('get data', () => {
     storage.get(key)
     expect(localStorage.getItem).toHaveBeenCalledWith(key)
   })
 
-  it('should remove data', () => {
+  it('remove data', () => {
     storage.remove(key)
     expect(localStorage.removeItem).toHaveBeenCalledWith(key)
   })
