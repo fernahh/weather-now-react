@@ -8,7 +8,7 @@ describe('<Card />', () => {
     expect(wrapper).toMatchSnapshot()
   })
   
-  it('should render card content', () => {
+  it('render card content', () => {
     const wrapper = shallow(<Card title="Foobar"><p>Foobar</p></Card>)
     expect(wrapper).toMatchSnapshot()
   })
