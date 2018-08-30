@@ -1,6 +1,5 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import sinon from 'sinon'
 import Alert from './alert'
 
 it('should render element with alert class', () => {
@@ -15,8 +14,8 @@ it('should render a paragraph with alert message', () => {
 })
 
 it('should execute retry action', () => {
-  const action = sinon.spy()
+  const action = jest.fn()
   const wrapper = shallow(<Alert message="Foobar" retryAction={action} />)
   wrapper.find('Button').simulate('click')
-  expect(action.calledOnce).toEqual(true)
+  expect(action).toBeCalled()
 })

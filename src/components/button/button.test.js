@@ -1,6 +1,5 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import sinon from 'sinon'
 import Button from './button'
 
 it('should render element with button class', () => {
@@ -9,20 +8,20 @@ it('should render element with button class', () => {
 })
 
 it('should execute function from onClick', () => {
-  const onButtonClickSpy = sinon.spy()
+  const onButtonClickSpy = jest.fn()
   const wrapper = shallow(<Button onClick={onButtonClickSpy} />)
   wrapper.find('button').simulate('click')
-  expect(onButtonClickSpy.calledOnce).toEqual(true)
+  expect(onButtonClickSpy).toBeCalled()
 })
 
 it('should render button with submit type', () => {
-  const wrapper = shallow(<Button type="submit" />)  
+  const wrapper = shallow(<Button type="submit" />)
   const type = wrapper.find('button').prop('type')
   expect(type).toEqual('submit')
 })
 
 it('should render button type as button when type is not present', () => {
-  const wrapper = shallow(<Button />)  
+  const wrapper = shallow(<Button />)
   const type = wrapper.find('button').prop('type')
   expect(type).toEqual('button')
 })
