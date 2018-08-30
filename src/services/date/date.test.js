@@ -8,20 +8,20 @@ jest.mock('date-fns/difference_in_milliseconds')
 jest.mock('date-fns/format')
 
 describe('Date', () => {
-  it('should call getTime from date-fns', () => {
+  it('call getTime from date-fns', () => {
     const currentDate = new Date()
     date.now(currentDate)
-    expect(getTime).toHaveBeenCalledWith(currentDate)
+    expect(getTime).toHaveBeenCalled()
   })
 
-  it('should call differenceInMilliseconds from date-fns', () => {
+  it('call differenceInMilliseconds from date-fns', () => {
     const currentDate = new Date()
     const otherDate = new Date()
     date.difference(currentDate, otherDate)
     expect(differenceInMilliseconds).toHaveBeenCalledWith(currentDate, otherDate)
   })
 
-  it('should call format from date-fns', () => {
+  it('call format from date-fns', () => {
     const timestamp = Date.now()
     const formatType = 'hh:mm:ss A'
     date.formatTimestamp({timestamp, formatType})
