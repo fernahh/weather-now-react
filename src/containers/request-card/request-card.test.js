@@ -39,16 +39,11 @@ describe('<RequestCard />', () => {
     request.get.mockImplementation(() => new Promise(jest.fn())) 
     const wrapper = getRequestCardWrapper()
 
-    it('should have request-card class', () => {
-      expect(wrapper.hasClass('request-card')).toEqual(true)
+    it('render correctly', () => {
+      expect(wrapper).toMatchSnapshot()
     })
     
-    it('should have a title', () => {
-      const cardProps = wrapper.find(Card).props()
-      expect(cardProps.title).toEqual('Foobar')
-    })
-    
-    it('should not call request get method with url when data is cached', () => {
+    it('do not call request get method with url when data is cached', () => {
       const cacheKey = 'dog'
       const cacheTime = 6000
       const beforeCacheTime = 8000
@@ -63,7 +58,7 @@ describe('<RequestCard />', () => {
       expect(request.get).not.toBeCalled()
     })
 
-    it('should call request get method with url when cache is less than TTL', () => {
+    it('call request get method with url when cache is less than TTL', () => {
       const cacheKey = 'dog'
       const cacheTime = 120000
       const afterCacheTime = 130000
@@ -78,22 +73,10 @@ describe('<RequestCard />', () => {
       expect(request.get).toHaveBeenCalledWith('http://api.com/dog', {})
     })
     
-    it('should call request get method with url', () => {
+    it('call request get method with url', () => {
       storage.get.mockReturnValue(false)
       getRequestCardWrapper(6000, 'dog', 7000)
       expect(request.get).toHaveBeenCalledWith('http://api.com/dog', {})
-    })
-
-    it('should set showLoader as true', () => {
-      expect(wrapper.state('showLoader')).toEqual(true)
-    })
-
-    it('should show Loader component', () => {
-      expect(wrapper.contains(<Loader />)).toEqual(true)
-    })
-
-    it('should not render children', () => {
-      expect(wrapper.exists('.content')).toEqual(false)
     })
   })
 
@@ -102,19 +85,11 @@ describe('<RequestCard />', () => {
     request.get.mockImplementation(() => Promise.resolve(data))
     const wrapper = getRequestCardWrapper()
 
-    it('should set showLoader as false', () => {
-      expect(wrapper.state('showLoader')).toEqual(false)
+    it('render correctly', () => {
+      expect(wrapper).toMatchSnapshot()
     })
 
-    it('should not show Loader component', () => {
-      expect(wrapper.contains(<Loader />)).toEqual(false)
-    })
-
-    it('should render children', () => {
-      expect(wrapper.exists('.content')).toEqual(true)
-    })
-
-    it('should execute onGetDataSuccess callback with data response', () => {
+    it('execute onGetDataSuccess callback with data response', () => {
       expect(onGetDataSuccess).toHaveBeenCalledWith(data)
     })
   })
@@ -124,32 +99,12 @@ describe('<RequestCard />', () => {
     request.get.mockImplementation(() => Promise.reject(error))
     const wrapper = getRequestCardWrapper()
 
-    it('should set showLoader as false', () => {
-      expect(wrapper.state('showLoader')).toEqual(false)
+    it('render correctly', () => {
+      expect(wrapper).toMatchSnapshot()
     })
 
-    it('should not show Loader component', () => {
-      expect(wrapper.contains(<Loader />)).toEqual(false)
-    })
-
-    it('should set showError from alert as true', () => {
-      expect(wrapper.state('showError')).toEqual(true)
-    })
-
-    it('should not render children', () => {
-      expect(wrapper.exists('.content')).toEqual(false)
-    })
-
-    it('should execute onGetDataError callback with error response', () => {
+    it('execute onGetDataError callback with error response', () => {
       expect(onGetDataError).toHaveBeenCalledWith(error)
-    })
-
-    it('should show alert component', () => {
-      const fetchAction = wrapper.instance().fetchData
-      
-      expect(wrapper.contains(
-        <Alert message="Something went wrong" retryAction={fetchAction}/>)
-      ).toEqual(true)
     })
   })
 
@@ -157,7 +112,7 @@ describe('<RequestCard />', () => {
     request.get.mockImplementation(() => new Promise(jest.fn())) 
     const wrapper = getRequestCardWrapper(6000)
 
-    it('should call get method with url', () => {
+    it('call get method with url', () => {
       request.get.mockClear()
       expect(request.get).not.toBeCalled()
     
@@ -165,7 +120,7 @@ describe('<RequestCard />', () => {
       expect(request.get).toHaveBeenCalledWith('http://api.com/dog', {})
     })
 
-    it('should clear interval on unmount', () => {
+    it('clear interval on unmount', () => {
       wrapper.unmount()
       expect(clearInterval).toHaveBeenCalled()
     })
@@ -175,12 +130,12 @@ describe('<RequestCard />', () => {
     request.get.mockImplementation(() => new Promise(jest.fn())) 
     const wrapper = getRequestCardWrapper()
 
-    it('should not call set interval method', () => {
+    it('do not call set interval method', () => {
       setInterval.mockClear()
       expect(setInterval).not.toBeCalled()
     })
 
-    it('should not call clear interval on unmount', () => {
+    it('do not call clear interval on unmount', () => {
       clearInterval.mockClear()
       wrapper.unmount()
       expect(clearInterval).not.toBeCalled()
@@ -192,7 +147,7 @@ describe('<RequestCard />', () => {
     getRequestCardWrapper(6000, 'dog', 7000)
     request.get.mockImplementation(() => Promise.resolve(data))
 
-    it('should set item on storage', () => {
+    it('set item on storage', () => {
       expect(storage.set).toHaveBeenCalledWith('dog', data)
     })
   })
