@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Topbar from '../../../components/topbar/topbar'
 import WeatherPanel from '../weather-panel/weather-panel'
 
