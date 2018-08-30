@@ -87,7 +87,7 @@ class RequestCard extends Component {
     return (
       <div className="request-card">
         <Card title={title}>
-          {showLoader && <Loader />}
+          {showLoader && !showError && <Loader />}
           {showError && <Alert message={errorMessage} retryAction={this.fetchData}/>}
           {showChildren && children}
         </Card>
