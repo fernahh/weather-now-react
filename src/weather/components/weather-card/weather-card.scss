@@ -1,0 +1,73 @@
+@import "../../../settings.scss";
+
+.weather-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+%weather-card__temperature {
+  position: relative;
+
+  font-size: 6rem;
+  line-height: 8.8rem;
+}
+
+.weather-card__temperature--cold {
+  @extend %weather-card__temperature;
+  color: $blue-color;
+}
+
+.weather-card__temperature--normal {
+  @extend %weather-card__temperature;
+  color: $orange-color;
+}
+
+.weather-card__temperature--hot {
+  @extend %weather-card__temperature;
+  color: $red-color;
+}
+
+.weather-card__temperature__celcius {
+  position: absolute;
+  top: 0;
+
+  font-size: 3.5rem;
+  line-height: 2;
+}
+
+.weather-card__footer {
+  width: 100%;
+
+  background-color: $gray-color__semi-light;
+}
+
+.weather-card__definition-list {
+  display: flex;
+
+  text-align: center;
+
+  .weather-card__definition-item {
+    width: 50%;
+  }
+
+  dt {
+    color: $gray-color__semi-dark;
+    font-size: .8em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin-left: 0;
+  }
+}
+
+.weather-card__unit {
+  font-size: .75rem;
+}
+
+.weather-card__update-at {
+  color: $gray-color__semi-dark;
+  font-size: .63rem;
+  text-align: center;
+}
