@@ -1,6 +1,6 @@
 import React from 'react'
 import WeatherCardContainer from '../../containers/weather-card-container/weather-card-container'
-import './weather-panel.css'
+import './weather-panel.scss'
 
 function WeatherPanel() {
   return (

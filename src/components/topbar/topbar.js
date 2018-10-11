@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from '../logo/logo'
-import './topbar.css'
+import './topbar.scss'
 
 function Topbar() {
   return (

@@ -1,4 +1,4 @@
-@import "normalize.css/normalize";
+@import "~normalize.css/normalize";
 @import "settings.scss";
 
 body {
@@ -7,7 +7,7 @@ body {
   padding: 0;
 
   background-color: $gray-color__light;
-  
+
   color: $gray-color__dark;
   font-family: $base-font-family;
 }

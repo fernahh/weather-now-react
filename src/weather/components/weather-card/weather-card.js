@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import date from '../../../services/date/date'
-import './weather-card.css'
+import './weather-card.scss'
 
 function getTemperatureState(temperature) {
   if (temperature <= 5)
